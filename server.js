@@ -1,15 +1,30 @@
-let http = require('http');
-let interval = process.argv.slice(2)[0] || 1000;
-let server = http.createServer().listen(8080);
-let timerId;
+let http = require('http'),
+    interval = process.argv.slice(2)[0] || 1000,
+    stop = process.argv.slice(2)[1] || 1000,
+    timerId;
 
-server.on('request', (req, res) => {
-  if (!timerId) {
-    timerId = setInterval(() => {
-      let date = new Date().toISOString();
-      console.log(date);
-    }, interval);
+const getDate = () => new Date().toISOString();
+
+const server = http.createServer((req, res) => {
+  if (req.url == '/') {
+    if (!timerId) {
+      timerId = setInterval(() => {
+        console.log(getDate());
+      }, interval);
+    } else {
+      setTimeout(() => {
+        clearInterval(timerId);
+        timerId = null;
+        res.end(getDate());
+      }, stop);
+    }
+  }
+});
+
+server.listen(3000, (err) => {
+  if (err) {
+    return console.log('something bad happened', err);
   }
 
-  res.end('<h1>Hello student from Loftschool!</h1>');
+  console.log(`server is listening on 3000`);
 });
