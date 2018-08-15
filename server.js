@@ -1,12 +1,12 @@
-let http = require('http'),
-    interval = process.argv.slice(2)[0] || 1000,
-    stop = process.argv.slice(2)[1] || 1000,
-    timerId;
+let http = require('http');
+let interval = process.argv.slice(2)[0] || 1000;
+let stop = process.argv.slice(2)[1] || 1000;
+let timerId = null;
 
 const getDate = () => new Date().toISOString();
 
 const server = http.createServer((req, res) => {
-  if (req.url == '/') {
+  if (req.url === '/') {
     if (!timerId) {
       timerId = setInterval(() => {
         console.log(getDate());
