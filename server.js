@@ -9,8 +9,10 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  let timerId = setInterval(() => console.log(getDate()), interval);
-  
+  let timerId = setInterval(() => {
+    console.log(getDate());
+  }, interval);
+
   setTimeout(() => {
     clearInterval(timerId);
     timerId = null;
